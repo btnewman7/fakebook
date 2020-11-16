@@ -1,9 +1,12 @@
 from flask import render_template
 from .import bp as main
+from app.blueprints.blog.models import BlogPost
 
 @main.route('/', methods=['GET'])
 def index():
-    context = {}
+    context = {
+        'posts': BlogPost.query.order_by(BlogPost.created_on.desc()).all()
+    }
     return render_template('main/index.html', **context)
 
 @main.route('/about', methods=['GET'])

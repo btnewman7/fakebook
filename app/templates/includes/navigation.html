@@ -19,5 +19,19 @@
                 <a class="nav-link" href="{{ url_for('main.contact') }}">Contact</a>
             </li>
         </ul>
+        <ul class="navbar-nav m1-auto">
+            {% if not current_user.is_authenticated %}
+                <li class="nav-item">
+                    <a href="{{ url_for('authentication.login') }}" class="nav-link">Login</a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ url_for('authentication.register') }}" class="nav-link">Register</a>
+                </li>
+            {% else %}
+                <li class="nav-item">
+                    <a href="{{ url_for('authentication.logout') }}" class="nav-link">Logout</a>
+                </li>
+            {% endif %}
+        </ul>
     </div>
 </nav>

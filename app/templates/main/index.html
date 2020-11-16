@@ -5,7 +5,21 @@
 {% endblock title %}
     
 {% block content %}
-<h1>Home Page</h1>
+<h1>Hello, {{ current_user.first_name }} {{ current_user.last_name }}</h1>
+<form action="{{ url_for('blog.create') }}" method="POST" class="form-inline">
+    <label class="sr-only" for="inlineFormInputName2">Name</label>
+    <input type="text" class="form-control mb-2 mr-sm-2" style="width: 1020px !important;" id="inlineFormInputName2" name='post' placeholder="Type status here">
+    <button type="submit" class="btn btn-primary mb-2">Post</button>
+</form>
+
+<ul class="list-group">
+    {% for p in posts %}
+        <li class="list-group-item">
+            {{ p.body }} by: {{ p.user.email }}<br>
+            posted: {{ moment(p.created_on).fromNow() }}
+        </li>
+    {% endfor %}
+</ul>
 {% endblock content %}
       
     
