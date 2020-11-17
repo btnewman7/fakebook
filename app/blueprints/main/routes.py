@@ -1,8 +1,11 @@
-from flask import render_template
+from flask import render_template, request, redirect, url_for, flash
 from .import bp as main
 from app.blueprints.blog.models import BlogPost
+from flask_login import login_required
+from .email import send_contact_email
 
 @main.route('/', methods=['GET'])
+@login_required
 def index():
     context = {
         'posts': BlogPost.query.order_by(BlogPost.created_on.desc()).all()
@@ -14,7 +17,16 @@ def about():
     context = {}
     return render_template('main/about.html', **context)
 
-@main.route('/contact', methods=['GET'])
+@main.route('/contact', methods=['GET', 'POST'])
 def contact():
+    if request.method == 'POST':
+        try:
+            form_data = request.form.to_dict()
+            send_contact_email(form_data)
+            flash('Contact form inquiry sent successfully.', 'success')
+            return redirect(url_for('main.contact'))
+        except Exception as error:
+            flash('There was a problem sending your contact form inquiry. Please try again.', 'danger')
+            return redirect(url_for('main.contact'))
     context = {}
     return render_template('main/contact.html', **context)
