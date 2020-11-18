@@ -10,3 +10,7 @@ class ProfileForm(FlaskForm):
     password = PasswordField()
     confirm_password = PasswordField(validators=[EqualTo('password')])
     submit = SubmitField('Update Profile')
+
+class EditBlogPostForm(FlaskForm):
+    body = StringField()
+    submit = SubmitField('Edit Post')

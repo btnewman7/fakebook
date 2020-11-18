@@ -4,16 +4,39 @@ from .import bp as blog
 from .models import BlogPost
 from app.blueprints.authentication.models import User
 from flask_login import current_user, login_required
-from .forms import ProfileForm
+from .forms import ProfileForm, EditBlogPostForm
 
-@blog.route('/', methods=['GET'])
+
+@blog.route('/edit', methods=['GET', 'POST'])
 @login_required
-def index():
+def edit():
+    form = EditBlogPostForm()
+    post_id = request.args.get('post_id')
+    if form.validate_on_submit():
+        data = {
+            'body': form.body.data,
+            'user_id': current_user.id
+        }
+        post = BlogPost.query.get(post_id)
+        post.from_dict(data)
+        db.session.commit()
+        flash('Post has updated successfully', 'info')
+        return redirect(url_for('blog.edit', post_id=post_id))
     context = {
-        'posts': []
+        'post': BlogPost.query.get(post_id),
+        'form': form
     }
-    return render_template('blog/index.html', **context)
+    return render_template('blog/single-post.html', **context)
 
+
+@blog.route('/delete', methods=['GET'])
+@login_required
+def delete():
+    post_id = request.args.get('post_id')
+    post = BlogPost.query.get(post_id)
+    post.remove()
+    flash('Post has been deleted successfully.', 'warning')
+    return redirect(url_for('main.index'))
     
 @blog.route('/create', methods=['POST'])
 @login_required

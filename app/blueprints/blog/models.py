@@ -7,6 +7,10 @@ class BlogPost(db.Model):
     created_on = db.Column(db.DateTime, index=True, default=dt.utcnow)
     user_id = db.Column(db.ForeignKey('user.id'))
 
+    def remove(self):
+        db.session.delete(self)
+        db.session.commit()
+
     def save(self):
         db.session.add(self)
         db.session.commit()

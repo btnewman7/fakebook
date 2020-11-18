@@ -1,3 +1,14 @@
+{% set navbar = [
+    ('/', 'main.index', 'Home'),
+    ('/blog/profile', 'blog.profile', 'Profile'),
+    ('/blog/network', 'blog.network', 'Network'),
+    ('/about', 'main.about', 'About'),
+    ('/contact', 'main.contact', 'Contact'),
+    ('/authentication/login', 'authentication.login', 'Login'),
+    ('/authentication/register', 'authentication.register', 'Register'),
+] -%}
+{% set active_page =  active_page|default('main.index') -%}
+
 <!doctype html>
 <html lang="en">
   <head>
@@ -10,6 +21,7 @@
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css">
     <link rel="stylesheet" href="{{ url_for('static', filename='./css/main.css') }}">
   </head>
   <body>

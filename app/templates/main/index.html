@@ -15,8 +15,15 @@
 <ul class="list-group">
     {% for p in posts %}
         <li class="list-group-item">
-            {{ p.body }} by: {{ p.user.email }}<br>
+            <strong><a href="{{ url_for('blog.edit', post_id=p.id) }}">{{ p.body }}</a></strong> by: {{ p.user.email }}<br>
             posted: {{ moment(p.created_on).fromNow() }}
+            {% if p.user_id == current_user.id %}
+            <span class="float-right">
+                <a href="{{ url_for('blog.delete', post_id=p.id) }}">
+                    <i class="fas fa-trash text-danger"></i>
+                </a>
+            </span>
+            {% endif %}
         </li>
     {% endfor %}
 </ul>

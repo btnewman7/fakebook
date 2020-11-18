@@ -1,0 +1,34 @@
+{% extends 'layout.html' %}
+
+{% block title %}
+    {{ super() }}Post
+{% endblock title %}
+    
+{% block content %}
+<!-- <form action="{{ url_for('blog.create') }}" method="POST" class="form-inline">
+    <label class="sr-only" for="inlineFormInputName2">Name</label>
+    <input type="text" class="form-control mb-2 mr-sm-2" style="width: 1020px !important;" id="inlineFormInputName2" name='post' placeholder="Type status here">
+    <button type="submit" class="btn btn-primary mb-2">Post</button>
+</form> -->
+
+<ul class="list-group">
+    <li class="list-group-item">
+        {% if post.user_id == current_user.id %}
+        <form class="form-inline" method="POST" action="{{ url_for('blog.edit', post_id=post.id) }}">
+            {{ form.hidden_tag() }}
+            <div class="form-group">
+                {{ form.body(class="form-control", value=post.body, style='width: 950px;') }}
+                {{ form.submit(class="btn btn-outline-info") }}
+            </div>
+        </form> 
+        {% else %}
+        {{ post.body }}
+        {% endif %}
+         by: {{ post.user.email }}<br>
+        posted: {{ moment(post.created_on).fromNow() }}
+    </li>
+</ul>
+<a class="btn btn-link" href="{{ url_for('main.index') }}">Go Home</a>
+{% endblock content %}
+      
+    

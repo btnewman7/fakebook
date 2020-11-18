@@ -3,6 +3,8 @@
 {% block title %}
     {{ super() }}Profile
 {% endblock title %}
+
+{% set active_page = 'blog.profile' %}
     
 {% block content %}
 <h1>Profile Page</h1>
@@ -44,8 +46,13 @@
 <ul class="list-group">
     {% for p in posts|sort(attribute='created_on', reverse=True) %}
         <li class="list-group-item">
-            {{ p.body }} by: {{ p.user.email }}<br>
+            <strong><a href="{{ url_for('blog.edit', post_id=p.id) }}">{{ p.body }}</a></strong> by: {{ p.user.email }}<br>
             posted: {{ moment(p.created_on).fromNow() }}
+            <span class="float-right">
+              <a href="{{ url_for('blog.delete', post_id=p.id) }}">
+                  <i class="fas fa-trash text-danger"></i>
+              </a>
+          </span>
         </li>
     {% endfor %}
 </ul>
