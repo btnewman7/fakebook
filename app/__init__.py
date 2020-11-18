@@ -10,6 +10,8 @@ db = SQLAlchemy()
 migrate = Migrate()
 login = LoginManager()
 login.login_view = 'authentication.login'
+login.login_message = 'You do not have to access to this page.'
+login.login_message_category = 'danger'
 moment = Moment()
 mail = Mail()
 

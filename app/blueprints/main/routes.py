@@ -1,14 +1,14 @@
 from flask import render_template, request, redirect, url_for, flash
 from .import bp as main
 from app.blueprints.blog.models import BlogPost
-from flask_login import login_required
+from flask_login import login_required, current_user
 from .email import send_contact_email
 
 @main.route('/', methods=['GET'])
 @login_required
 def index():
     context = {
-        'posts': BlogPost.query.order_by(BlogPost.created_on.desc()).all()
+        'posts': current_user.followed_posts()
     }
     return render_template('main/index.html', **context)
 

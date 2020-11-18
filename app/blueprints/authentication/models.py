@@ -2,9 +2,15 @@ from app import db
 from datetime import datetime as dt
 from werkzeug.security import generate_password_hash, check_password_hash
 from app import login
+from app.blueprints.blog.models import BlogPost 
 
 from flask_login import UserMixin
 
+followers = db.Table(
+    'followers',
+    db.Column('follower_id', db.Integer, db.ForeignKey('user.id')),
+    db.Column('followed_id', db.Integer, db.ForeignKey('user.id'))
+)
 
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -15,11 +21,36 @@ class User(UserMixin, db.Model):
     password = db.Column(db.String(200))
     created_on = db.Column(db.DateTime, default=dt.utcnow)
     posts = db.relationship('BlogPost', cascade='all, delete-orphan', backref='user', lazy=True)
+    followed = db.relationship(
+        'User', secondary=followers,
+        primaryjoin=(followers.c.follower_id == id),
+        secondaryjoin=(followers.c.followed_id == id),
+        backref=db.backref('followers', lazy='dynamic'),
+        lazy='dynamic'
+        )
 
     # .get_id()
     # .is_anonymous = return True if Session object doesn't have user info stored in it
     # .is_authenticated  return True if Session object does have user info stored in it
     # current_user
+
+    def followed_posts(self):
+        followed = BlogPost.query.join(
+            followers, 
+            (followers.c.followed_id == BlogPost.user_id)).filter(followers.c.follower_id == self.id)
+        my_posts = BlogPost.query.filter_by(user_id=self.id)
+        return followed.union(my_posts).order_by(BlogPost.created_on.desc())
+
+    def follow(self, user):
+        if not self.is_following(user):
+            self.followed.append(user)
+
+    def unfollow(self, user):
+        if self.is_following(user):
+            self.followed.remove(user)
+
+    def is_following(self, user):
+        return self.followed.filter(followers.c.followed_id == user.id).count() > 0
 
     def save(self):
         db.session.add(self)
