@@ -23,6 +23,9 @@
             <li class="nav-item {% if active_page == 'main.contact' %}active{% endif %}">
                 <a class="nav-link" href="{{ url_for('main.contact') }}">Contact</a>
             </li>
+            <li class="nav-item {% if active_page == 'shop.index' %}active{% endif %}">
+                <a class="nav-link" href="{{ url_for('shop.index') }}">Shop</a>
+            </li>
         </ul>
         <ul class="navbar-nav m1-auto">
             {% if not current_user.is_authenticated %}

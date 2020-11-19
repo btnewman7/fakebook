@@ -1,12 +1,3 @@
-{% set navbar = [
-    ('/', 'main.index', 'Home'),
-    ('/blog/profile', 'blog.profile', 'Profile'),
-    ('/blog/network', 'blog.network', 'Network'),
-    ('/about', 'main.about', 'About'),
-    ('/contact', 'main.contact', 'Contact'),
-    ('/authentication/login', 'authentication.login', 'Login'),
-    ('/authentication/register', 'authentication.register', 'Register'),
-] -%}
 {% set active_page =  active_page|default('main.index') -%}
 
 <!doctype html>
