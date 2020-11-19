@@ -40,4 +40,7 @@ def create_app(config_class=Config):
     from .blueprints.api import bp as api_bp
     app.register_blueprint(api_bp)
 
+    with app.app_context():
+        from .import context_processors
+
     return app
