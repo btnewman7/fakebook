@@ -106,10 +106,10 @@ def single_category(id):
 @api.route('/category/create', methods=['POST'])
 def create_category():
     data = request.json
-    post = Category()
-    post.from_dict(data)
-    post.save()
-    return jsonify(post.to_dict()), 201
+    c = Category()
+    c.from_dict(data)
+    c.save()
+    return jsonify(c.to_dict()), 201
 
 @api.route('category/edit/<int:id>', methods=['PUT'])
 def edit_category(id):

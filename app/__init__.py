@@ -34,8 +34,6 @@ def create_app(config_class=Config):
     from .blueprints.authentication import bp as auth_bp
     app.register_blueprint(auth_bp)
 
-    from .blueprints.shop import bp as shop_bp
-    app.register_blueprint(shop_bp)
 
     from .blueprints.api import bp as api_bp
     app.register_blueprint(api_bp)
@@ -43,4 +41,7 @@ def create_app(config_class=Config):
     with app.app_context():
         from .import context_processors
 
+        from .blueprints.shop import bp as shop_bp
+        app.register_blueprint(shop_bp)
+    
     return app

@@ -2,7 +2,8 @@ from app import db
 from datetime import datetime as dt
 from werkzeug.security import generate_password_hash, check_password_hash
 from app import login
-from app.blueprints.blog.models import BlogPost 
+from app.blueprints.blog.models import BlogPost
+from sqlalchemy.dialects.postgresql import UUID
 
 from flask_login import UserMixin
 
@@ -20,6 +21,7 @@ class User(UserMixin, db.Model):
     email = db.Column(db.String(100), unique=True, index=True)
     password = db.Column(db.String(200))
     created_on = db.Column(db.DateTime, default=dt.utcnow)
+    is_customer = db.Column(db.Boolean, default=False)
     posts = db.relationship('BlogPost', cascade='all, delete-orphan', backref='user', lazy=True)
     followed = db.relationship(
         'User', secondary=followers,

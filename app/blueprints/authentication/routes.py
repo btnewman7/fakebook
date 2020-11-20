@@ -6,6 +6,8 @@ from .forms import RegistrationForm
 
 @auth.route('/login', methods=['GET', 'POST'])
 def login():
+    if current_user.is_authenticated:
+        return redirect(url_for('main.index'))
     if request.method == 'POST':
         form_data = request.form.to_dict()
         email = form_data.get('email')

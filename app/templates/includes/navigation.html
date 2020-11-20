@@ -9,6 +9,12 @@
             <li class="nav-item {% if active_page == 'main.index' %}active{% endif %}">
                 <a class="nav-link" href="{{ url_for('main.index') }}">Home <span class="sr-only">(current)</span></a>
             </li>
+            <li class="nav-item {% if active_page == 'main.about' %}active{% endif %}">
+                <a class="nav-link" href="{{ url_for('main.about') }}">About</a>
+            </li>
+            <li class="nav-item {% if active_page == 'main.contact' %}active{% endif %}">
+                <a class="nav-link" href="{{ url_for('main.contact') }}">Contact</a>
+            </li>
             {% if current_user.is_authenticated %}
             <li class="nav-item {% if active_page == 'blog.profile' %}active{% endif %}">
                 <a class="nav-link" href="{{ url_for('blog.profile') }}">Profile</a>
@@ -17,14 +23,13 @@
                 <a class="nav-link" href="{{ url_for('blog.network') }}">Network</a>
             </li>
             {% endif %}
-            <li class="nav-item {% if active_page == 'main.about' %}active{% endif %}">
-                <a class="nav-link" href="{{ url_for('main.about') }}">About</a>
-            </li>
-            <li class="nav-item {% if active_page == 'main.contact' %}active{% endif %}">
-                <a class="nav-link" href="{{ url_for('main.contact') }}">Contact</a>
-            </li>
             <li class="nav-item {% if active_page == 'shop.index' %}active{% endif %}">
                 <a class="nav-link" href="{{ url_for('shop.index') }}">Shop</a>
+            </li>
+            <li class="nav-item {% if active_page == 'shop.show_cart' %}active{% endif %}">
+                <a class="nav-link" href="{{ url_for('shop.show_cart') }}">
+                    Cart <span class="badge badge-light"><i class="fas fa-shopping-bag"></i> {{ cart_items|length }}  | ${{ subtotal }}</span>
+                </a>
             </li>
         </ul>
         <ul class="navbar-nav m1-auto">

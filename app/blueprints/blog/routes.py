@@ -43,7 +43,7 @@ def delete():
 def create():
     data = {
         'body': request.form.get('post'),
-        'user_id': current_user.id
+        'user_id': current_user.email
     }
     post = BlogPost()
     post.from_dict(data)

@@ -16,3 +16,5 @@ class Config:
     MAIL_PASSWORD = os.getenv('MAIL_PASSWORD')
     MAIL_USE_TLS = os.getenv('MAIL_USE_TLS')
     MAIL_ADMIN = os.getenv('MAIL_ADMIN')
+    STRIPE_SK_TEST = os.getenv('STRIPE_SK_TEST')
+    STRIPE_PK_TEST = os.getenv('STRIPE_PK_TEST')

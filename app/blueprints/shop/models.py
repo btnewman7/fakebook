@@ -1,5 +1,8 @@
 from app import db
 from datetime import datetime as dt
+import uuid
+from sqlalchemy.dialects.postgresql import UUID
+
 
 class Product(db.Model):
     id = db.Column(db.Integer(), primary_key=True)
@@ -46,7 +49,7 @@ class Product(db.Model):
 
 class Category(db.Model):
     id = db.Column(db.Integer(), primary_key=True)
-    name = db.Column(db.String())
+    name = db.Column(db.String, unique=True)
     products = db.relationship('Product', cascade='all, delete-orphan', backref='category', lazy=True)
 
     def save(self):
@@ -71,4 +74,22 @@ class Category(db.Model):
             'name': self.name,
             'products': [p.to_dict() for p in Product.query.filter_by(category_id=self.id).all()]
         }
-        return data
+
+
+class Cart(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.ForeignKey('user.id'))
+    product_id = db.Column(db.ForeignKey('product.id'))
+
+    def save(self):
+        db.session.add(self)
+        db.session.commit()
+
+    def from_dict(self, data):
+        for field in ['user_id', 'product_id']:
+            if field in data:
+                setattr(self, field, data[field])
+
+    def __repr__(self):
+        from app.blueprints.authentication.models import User
+        return f'{User.query.get(self.user_id).email}: {Product.query.get(self.product_id).name}'

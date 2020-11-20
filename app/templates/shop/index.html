@@ -51,8 +51,10 @@
                                     <img class="card-img-top img-fluid" src="{{ p.image }}" alt="{{ p.name }}">
                                 </a>
                                 <div class="card-body">
-                                    
                                     <p class="card-text">{{ p.description|truncate(100) }}</p>
+                                </div>
+                                <div class="card-footer">
+                                    <a class="btn btn-success btn-block" href="{{ url_for('shop.add_to_cart', id=p.id) }}">Add to cart</a>
                                 </div>
                             </div>
                         </div>
