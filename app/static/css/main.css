@@ -5,3 +5,8 @@ nav {
 .product {
     height: 652px;   
 }
+
+main {
+    min-height: 500px;
+    margin-bottom: 35px;
+}

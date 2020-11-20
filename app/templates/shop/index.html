@@ -3,6 +3,8 @@
 {% block title %}
     {{ super() }}Shop
 {% endblock title %}
+
+{% set active_page = 'shop.index' %}
     
 {% block content %}
 <h1>Shop Page</h1>
@@ -34,7 +36,29 @@
         <div class="col">
             <div class="row">
                 {% for p in products %}
-                <div class="col-12 col-md-6 col-lg-4 product">
+                <div class="col-md-6">
+                    <div class="card-deck">
+                        <div class="card">
+                            <div style="padding: 15px;">
+                                <div>
+                                    <h6 class="card-title">
+                                        <strong>{{ p.name }}</strong>
+                                        <span class="float-right">{{ '${:,.2f}'.format(p.price) }}</span>
+                                    </h6>
+                                </div>
+                                
+                                <a href="{{ url_for('shop.single', id=p.id) }}">
+                                    <img class="card-img-top img-fluid" src="{{ p.image }}" alt="{{ p.name }}">
+                                </a>
+                                <div class="card-body">
+                                    
+                                    <p class="card-text">{{ p.description|truncate(100) }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- <div class="col-12 col-md-6 col-lg-4 product">
                     <div class="card">
                         <img class="card-img-top img-fluid" src="{{ p.image }}" alt="{{ p.name }}">
                         <div class="card-body">
@@ -48,7 +72,7 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> -->
                 {% endfor %}
                 <div class="col-12">
                     <nav aria-label="...">

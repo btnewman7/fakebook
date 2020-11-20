@@ -36,6 +36,7 @@ class Product(db.Model):
             'id': self.id,
             'name': self.name,
             'price': self.price,
+            'image': self.image,
             'category': Category.query.get(self.category_id).name,
             'tax': self.tax,
             'description': self.description,

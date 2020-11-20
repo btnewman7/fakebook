@@ -61,7 +61,7 @@ def profile():
                 'last_name': form.last_name.data,
                 'email': form.email.data
             }
-            u = AuthUser.query.get(current_user.id)
+            u = User.query.get(current_user.id)
             u.from_dict(data)
             if form.password.data and form.confirm_password.data:
                 u.hash_password(form.password.data)
@@ -82,7 +82,7 @@ def profile():
 @login_required
 def network():
     context = {
-        'users': [u for u in AuthUser.query.all() if current_user.id != u.id]
+        'users': [u for u in User.query.all() if current_user.id != u.id]
     }
     return render_template('blog/network.html', **context)
 
@@ -90,7 +90,7 @@ def network():
 @login_required
 def follow():
     user_id = request.args.get('user_id')
-    u = AuthUser.query.get(user_id)
+    u = User.query.get(user_id)
     current_user.follow(u)
     db.session.commit()
     flash(f'You have followed {u.first_name} {u.last_name}', 'success')
@@ -100,7 +100,7 @@ def follow():
 @login_required
 def unfollow():
     user_id = request.args.get('user_id')
-    u = AuthUser.query.get(user_id)
+    u = User.query.get(user_id)
     current_user.unfollow(u)
     db.session.commit()
     flash(f'You have unfollowed {u.first_name} {u.last_name}', 'warning')
