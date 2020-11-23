@@ -8,35 +8,48 @@ def get_product_categories():
 
 @app.context_processor
 def get_subtotal():
-    return { 'subtotal': round(sum([Product.query.get(i.product_id).price for i in Cart.query.filter_by(user_id=current_user.id).all()]), 2) }
+    if current_user.is_anonymous:
+        return {} 
+    else:
+        return { 'subtotal': round(sum([Product.query.get(i.product_id).price for i in Cart.query.filter_by(user_id=current_user.id).all()]), 2) }
+
 
 @app.context_processor
 def get_grandtotal():
-    return { 'grandtotal': round(sum([Product.query.get(i.product_id).price+Product.query.get(i.product_id).tax for i in Cart.query.filter_by(user_id=current_user.id).all()]), 2) }
+    if current_user.is_anonymous:
+        return {} 
+    else:
+        return  { 'grandtotal': round(sum([Product.query.get(i.product_id).price+Product.query.get(i.product_id).tax for i in Cart.query.filter_by(user_id=current_user.id).all()]), 2) }
 
 @app.context_processor
 def get_cart_items():
-    return { 'cart_items': Cart.query.filter_by(user_id=current_user.id).all() }
+    if current_user.is_anonymous:
+        return {} 
+    else:
+        return { 'cart_items': Cart.query.filter_by(user_id=current_user.id).all() }
 
 @app.context_processor
 def get_display_cart():
     cart_list = {}
-    for i in Cart.query.filter_by(user_id=current_user.id).all():
-        product = Product.query.get(i.product_id)
-        if i.product_id not in cart_list.keys():
-            cart_list[product.id] = {
-                'id': i.id,
-                'product_id': product.id,
-                'quantity': 1,
-                'name': product.name,
-                'image': product.image,
-                'description': product.description,
-                'price': product.price
-            }
-        else: 
-            cart_list[product.id]['quantity'] += 1
-    session['display_cart'] = cart_list
-    return { 'display_cart': cart_list.values() }
+    if current_user.is_anonymous:
+        return {} 
+    else:
+        for i in Cart.query.filter_by(user_id=current_user.id).all():
+            product = Product.query.get(i.product_id)
+            if i.product_id not in cart_list.keys():
+                cart_list[product.id] = {
+                    'id': i.id,
+                    'product_id': product.id,
+                    'quantity': 1,
+                    'name': product.name,
+                    'image': product.image,
+                    'description': product.description,
+                    'price': product.price
+                }
+            else: 
+                cart_list[product.id]['quantity'] += 1
+                session['display_cart'] = cart_list
+                return { 'display_cart': cart_list.values() }
 
 @app.context_processor
 def get_stripe_credentials():
